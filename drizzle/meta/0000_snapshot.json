@@ -1,0 +1,496 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "677c1115-0a5d-44f1-8194-56f27a17342b",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "appointments": {
+      "name": "appointments",
+      "columns": {
+        "appointment_id": {
+          "name": "appointment_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "patient_id": {
+          "name": "patient_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slot": {
+          "name": "slot",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "call_id": {
+          "name": "call_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_appointments_slot": {
+          "name": "idx_appointments_slot",
+          "columns": [
+            "slot"
+          ],
+          "isUnique": true
+        },
+        "idx_appointments_call": {
+          "name": "idx_appointments_call",
+          "columns": [
+            "call_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "appointments_patient_id_patients_patient_id_fk": {
+          "name": "appointments_patient_id_patients_patient_id_fk",
+          "tableFrom": "appointments",
+          "tableTo": "patients",
+          "columnsFrom": [
+            "patient_id"
+          ],
+          "columnsTo": [
+            "patient_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "appointments_call_id_calls_call_id_fk": {
+          "name": "appointments_call_id_calls_call_id_fk",
+          "tableFrom": "appointments",
+          "tableTo": "calls",
+          "columnsFrom": [
+            "call_id"
+          ],
+          "columnsTo": [
+            "call_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "calls": {
+      "name": "calls",
+      "columns": {
+        "call_id": {
+          "name": "call_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "patient_id": {
+          "name": "patient_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'in-progress'"
+        },
+        "draft_json": {
+          "name": "draft_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "draft_token": {
+          "name": "draft_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "draft_patient_id": {
+          "name": "draft_patient_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "verified_patient_id": {
+          "name": "verified_patient_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "committed_token": {
+          "name": "committed_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "transcript": {
+          "name": "transcript",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ended_reason": {
+          "name": "ended_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_calls_patient": {
+          "name": "idx_calls_patient",
+          "columns": [
+            "patient_id"
+          ],
+          "isUnique": false
+        },
+        "idx_calls_updated": {
+          "name": "idx_calls_updated",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "calls_patient_id_patients_patient_id_fk": {
+          "name": "calls_patient_id_patients_patient_id_fk",
+          "tableFrom": "calls",
+          "tableTo": "patients",
+          "columnsFrom": [
+            "patient_id"
+          ],
+          "columnsTo": [
+            "patient_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "patients": {
+      "name": "patients",
+      "columns": {
+        "patient_id": {
+          "name": "patient_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "date_of_birth": {
+          "name": "date_of_birth",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sex": {
+          "name": "sex",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "address_line_1": {
+          "name": "address_line_1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "address_line_2": {
+          "name": "address_line_2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "city": {
+          "name": "city",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "zip_code": {
+          "name": "zip_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "insurance_provider": {
+          "name": "insurance_provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "insurance_member_id": {
+          "name": "insurance_member_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "preferred_language": {
+          "name": "preferred_language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'English'"
+        },
+        "emergency_contact_name": {
+          "name": "emergency_contact_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "emergency_contact_phone": {
+          "name": "emergency_contact_phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_patients_last_name": {
+          "name": "idx_patients_last_name",
+          "columns": [
+            "last_name"
+          ],
+          "isUnique": false,
+          "where": "\"patients\".\"deleted_at\" IS NULL"
+        },
+        "idx_patients_phone": {
+          "name": "idx_patients_phone",
+          "columns": [
+            "phone_number"
+          ],
+          "isUnique": false,
+          "where": "\"patients\".\"deleted_at\" IS NULL"
+        },
+        "idx_patients_dob": {
+          "name": "idx_patients_dob",
+          "columns": [
+            "date_of_birth"
+          ],
+          "isUnique": false,
+          "where": "\"patients\".\"deleted_at\" IS NULL"
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "patient_id_uuid": {
+          "name": "patient_id_uuid",
+          "value": "length(\"patients\".\"patient_id\") = 36"
+        },
+        "first_name_length": {
+          "name": "first_name_length",
+          "value": "length(trim(\"patients\".\"first_name\")) BETWEEN 1 AND 50"
+        },
+        "last_name_length": {
+          "name": "last_name_length",
+          "value": "length(trim(\"patients\".\"last_name\")) BETWEEN 1 AND 50"
+        },
+        "sex_enum": {
+          "name": "sex_enum",
+          "value": "\"patients\".\"sex\" IN ('Male','Female','Other','Decline to Answer')"
+        },
+        "phone_format": {
+          "name": "phone_format",
+          "value": "length(\"patients\".\"phone_number\")=10 AND \"patients\".\"phone_number\" NOT GLOB '*[^0-9]*' AND substr(\"patients\".\"phone_number\",1,1) BETWEEN '2' AND '9' AND substr(\"patients\".\"phone_number\",4,1) BETWEEN '2' AND '9'"
+        },
+        "dob_format": {
+          "name": "dob_format",
+          "value": "\"patients\".\"date_of_birth\" GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]' AND date(\"patients\".\"date_of_birth\",'+0 days') IS NOT NULL AND date(\"patients\".\"date_of_birth\",'+0 days')=\"patients\".\"date_of_birth\""
+        },
+        "street_length": {
+          "name": "street_length",
+          "value": "length(trim(\"patients\".\"address_line_1\")) BETWEEN 1 AND 200"
+        },
+        "city_length": {
+          "name": "city_length",
+          "value": "length(trim(\"patients\".\"city\")) BETWEEN 1 AND 100"
+        },
+        "state_enum": {
+          "name": "state_enum",
+          "value": "\"patients\".\"state\" IN ('AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY')"
+        },
+        "zip_format": {
+          "name": "zip_format",
+          "value": "\"patients\".\"zip_code\" GLOB '[0-9][0-9][0-9][0-9][0-9]' OR \"patients\".\"zip_code\" GLOB '[0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'"
+        },
+        "member_id_format": {
+          "name": "member_id_format",
+          "value": "\"patients\".\"insurance_member_id\" IS NULL OR (length(\"patients\".\"insurance_member_id\") BETWEEN 1 AND 100 AND \"patients\".\"insurance_member_id\" NOT GLOB '*[^A-Za-z0-9]*')"
+        },
+        "emergency_phone_format": {
+          "name": "emergency_phone_format",
+          "value": "\"patients\".\"emergency_contact_phone\" IS NULL OR (length(\"patients\".\"emergency_contact_phone\")=10 AND \"patients\".\"emergency_contact_phone\" NOT GLOB '*[^0-9]*')"
+        },
+        "language_length": {
+          "name": "language_length",
+          "value": "length(trim(\"patients\".\"preferred_language\")) BETWEEN 1 AND 50"
+        }
+      }
+    },
+    "rate_limits": {
+      "name": "rate_limits",
+      "columns": {
+        "bucket": {
+          "name": "bucket",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "info": {
+    "name": "CareCloud Intake",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{api_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5173"
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    },
+    {
+      "key": "patient_id",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List patients",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/patients",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "patients"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create synthetic patient",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/patients",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "patients"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Doe\",\n  \"date_of_birth\": \"03/15/1990\",\n  \"sex\": \"Female\",\n  \"phone_number\": \"2025550142\",\n  \"address_line_1\": \"123 Example Street\",\n  \"city\": \"Boston\",\n  \"state\": \"MA\",\n  \"zip_code\": \"02108\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Created', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('patient_id', pm.response.json().data.patient_id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get patient",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/patients/{{patient_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "patients",
+            "{{patient_id}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Correct last name",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/patients/{{patient_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "patients",
+            "{{patient_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"last_name\": \"Davis\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Soft-delete patient",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/patients/{{patient_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "patients",
+            "{{patient_id}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "View call history",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/calls",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "calls"
+          ]
+        }
+      }
+    }
+  ]
+}
