@@ -29,9 +29,10 @@ async function request(path, method = "GET", body) {
   });
   const result = await r.json();
   if (!r.ok) {
-    console.error(
-      `Vapi ${method} ${path}: HTTP ${r.status}. Check the Vapi dashboard for account, credit, region or configuration restrictions.`,
-    );
+    const details = JSON.stringify(result)
+      .replaceAll(key, "[REDACTED]")
+      .replaceAll(secret, "[REDACTED]");
+    console.error(`Vapi ${method} ${path}: HTTP ${r.status}. ${details}`);
     throw Error(
       "Vapi request failed; no automatic create retry was attempted.",
     );
@@ -89,7 +90,7 @@ if (!state.phoneNumberId) {
     const n = await request("/phone-number", "POST", {
       provider: "vapi",
       name: "CareCloud Intake",
-      numberDesiredAreaCode: "202",
+      numberDesiredAreaCode: process.env.VAPI_AREA_CODE || "772",
       assistantId: state.assistantId,
     });
     state.phoneNumberId = n.id;

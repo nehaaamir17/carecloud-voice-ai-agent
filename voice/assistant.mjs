@@ -64,7 +64,10 @@ export const toolDefinitions = [
           "Only for a verified returning patient who agreed to update",
         ),
         update_requested: { type: "boolean" },
-        optional_fields_offered: { type: "boolean", enum: [true] },
+        optional_fields_offered: {
+          type: "boolean",
+          description: "Set true after offering every optional field",
+        },
       },
       ["patient", "optional_fields_offered"],
     ),
@@ -78,7 +81,10 @@ export const toolDefinitions = [
         confirmation_token: text(
           "Exact token returned by latest prepare_registration",
         ),
-        caller_confirmed: { type: "boolean", enum: [true] },
+        caller_confirmed: {
+          type: "boolean",
+          description: "Set true only after explicit caller confirmation",
+        },
       },
       ["confirmation_token", "caller_confirmed"],
     ),
@@ -102,7 +108,10 @@ export const toolDefinitions = [
     parameters: object(
       {
         slot: text("Exact ISO timestamp from available_appointments"),
-        caller_confirmed: { type: "boolean", enum: [true] },
+        caller_confirmed: {
+          type: "boolean",
+          description: "Set true only after explicit caller confirmation",
+        },
       },
       ["slot", "caller_confirmed"],
     ),

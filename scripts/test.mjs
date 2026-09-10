@@ -1,10 +1,14 @@
 import { build } from "esbuild";
 import { spawnSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
-mkdirSync("test-results", { recursive: true });
+import { fileURLToPath } from "node:url";
+
+const projectRoot = fileURLToPath(new URL("../", import.meta.url));
+mkdirSync(new URL("../test-results/", import.meta.url), { recursive: true });
 await build({
-  entryPoints: ["tests/assessment.test.ts", "tests/resilience.test.ts"],
-  outdir: "test-results",
+  absWorkingDir: projectRoot,
+  entryPoints: ["./tests/assessment.test.ts", "./tests/resilience.test.ts"],
+  outdir: "./test-results",
   outExtension: { ".js": ".mjs" },
   bundle: true,
   platform: "node",
