@@ -6,15 +6,15 @@ An AI Engineer assessment implementation: a phone-based patient registration age
 
 ## Submission status
 
-| Deliverable          | Status                                                   |
-| -------------------- | -------------------------------------------------------- |
-| Repository           | Local source ready; intended GitHub owner: `nehaaamir17` |
-| API base URL         | Deployment verification pending                          |
-| Dashboard            | Same origin as the API; reviewer key required            |
-| US phone number      | Pending Vapi account/private key and provisioning        |
-| Reviewer credentials | Shared separately; never committed                       |
+| Deliverable          | Status                                                                                                               |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Repository           | Prepared for publication under `nehaaamir17`                                                                         |
+| API base URL         | [carecloud-voice-intake-neha.aamirneha73.chatgpt.site](https://carecloud-voice-intake-neha.aamirneha73.chatgpt.site) |
+| Dashboard            | Same public origin; patient data requires the separately shared reviewer key                                         |
+| US phone number      | **[+1 (772) 256-9450](tel:+17722569450)**                                                                            |
+| Reviewer credentials | Shared separately; never committed                                                                                   |
 
-The backend is integration-tested. Real phone audio, pronunciation, interruption handling and Spanish voice quality must be tested after provisioning. A webhook test is not a real phone-call test.
+The backend is integration-tested and the Vapi assistant is attached to the listed US number. Real phone audio, pronunciation, interruption handling and Spanish voice quality should still be checked with the [demo script](docs/DEMO.md); a webhook test alone is not a real phone-call test.
 
 ## What it does
 
