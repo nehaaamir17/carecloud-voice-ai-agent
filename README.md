@@ -24,6 +24,7 @@ The backend is integration-tested and the Vapi assistant is attached to the list
 - Recognizes returning patients by phone and date of birth, then asks permission before updating.
 - Exposes all five requested patient endpoints, optional filters, structured validation errors and soft deletion.
 - Shows patient records, call outcomes, linked transcripts and persistent mock appointment bookings in the dashboard.
+- Offers four persistent interface themes, a public intake-flow visualization, and privacy-safe aggregate registry charts.
 - Includes a Spanish-capable voice configuration, generated OpenAPI/Postman artifacts, and automated integration tests using real SQLite.
 
 ## Architecture
