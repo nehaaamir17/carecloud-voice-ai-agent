@@ -7,6 +7,10 @@ import {
   RefreshCw,
   Users,
   Activity,
+  BadgeCheck,
+  Database,
+  MessageCircleMore,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Table,
@@ -26,6 +30,8 @@ import {
 import { CallHistory } from "@/components/call-history";
 import { AgentCard } from "@/components/agent-card";
 import { RegistryTools } from "@/components/webmcp";
+import { ThemePicker } from "@/components/theme-picker";
+import { OperationsInsights } from "@/components/operations-insights";
 type Patient = Record<string, string | null>;
 export default function Home() {
   const [revision, setRevision] = useState(0);
@@ -99,9 +105,12 @@ export default function Home() {
         <span className="demo-label">
           ASSESSMENT DEMO · SYNTHETIC DATA ONLY
         </span>
-        <a className="text-link" href="/docs">
-          API reference <ArrowUpRight size={16} />
-        </a>
+        <div className="topbar-actions">
+          <ThemePicker />
+          <a className="text-link" href="/docs">
+            API reference <ArrowUpRight size={16} />
+          </a>
+        </div>
       </header>
       <main className="content">
         <div className="page-heading">
@@ -140,6 +149,46 @@ export default function Home() {
             <small>Soft deletion preserves the original record</small>
           </div>
         </div>
+        <section className="workflow" aria-labelledby="workflow-title">
+          <div className="workflow-copy">
+            <div className="eyebrow">CONFIRMATION-FIRST DESIGN</div>
+            <h2 id="workflow-title">One safe path from call to record</h2>
+            <p>Every registration moves through the same auditable sequence.</p>
+          </div>
+          <ol className="workflow-steps">
+            {[
+              {
+                icon: MessageCircleMore,
+                label: "Talk",
+                detail: "Natural intake",
+              },
+              {
+                icon: ShieldCheck,
+                label: "Validate",
+                detail: "Field checks",
+              },
+              {
+                icon: BadgeCheck,
+                label: "Confirm",
+                detail: "Full read-back",
+              },
+              {
+                icon: Database,
+                label: "Persist",
+                detail: "Atomic save",
+              },
+            ].map(({ icon: Icon, label, detail }, index) => (
+              <li key={label}>
+                <span className="step-number">0{index + 1}</span>
+                <span className="step-icon">
+                  <Icon size={19} />
+                </span>
+                <strong>{label}</strong>
+                <small>{detail}</small>
+              </li>
+            ))}
+          </ol>
+        </section>
         <section className="registry">
           <div className="section-heading">
             <div>
@@ -290,6 +339,7 @@ export default function Home() {
         </section>
         {!locked && (
           <>
+            <OperationsInsights patients={patients} />
             <CallHistory revision={revision} />
             <RegistryTools onResults={setPatients} />
           </>
