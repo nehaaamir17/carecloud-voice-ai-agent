@@ -31,7 +31,7 @@ Source: all eight pages of the supplied Voice AI Agent Patient Registration Syst
 | Scheduling bonus                                 | Persistent mock availability and unique slot booking                                                  | Booking/idempotency test                                          |
 | Spanish bonus                                    | Multilingual STT/TTS and language-aware prompt                                                        | Configuration present; real Spanish audio pending                 |
 | Transcript bonus                                 | End-of-call webhook linked to patient                                                                 | Integration test and dashboard                                    |
-| Dashboard bonus                                  | Patient table/search/details, call history, transcripts, demo bookings                                | Production build and live page load verified                      |
+| Dashboard bonus                                  | Patient table/search/details, call history, transcripts, demo bookings, themes and aggregate charts   | Responsive mobile QA, theme persistence and production build      |
 | Tests bonus                                      | Node test runner, real SQLite and production handler                                                  | Automated test suite                                              |
 
 ## Evaluation dimensions
