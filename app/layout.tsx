@@ -17,7 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="clinical" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('carecloud-theme');if(['clinical','ocean','orchid','midnight'].includes(t))document.documentElement.dataset.theme=t}catch(e){}",
+          }}
+        />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
