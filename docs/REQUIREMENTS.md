@@ -4,7 +4,7 @@ Source: all eight pages of the supplied Voice AI Agent Patient Registration Syst
 
 | Requirement                                      | Implementation                                                                                        | Verification                                                      |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Real US inbound phone number                     | Vapi provisioning script, permanent assistant, phone routing                                          | Requires Vapi account/key and real test call; not yet verified    |
+| Real US inbound phone number                     | Vapi number `+1 (772) 256-9450`, permanent assistant, phone routing                                   | Provider resource and routing verified; real audio call pending   |
 | Natural LLM conversation                         | GPT-4.1 via Vapi; Deepgram Nova 3; Vapi multilingual speech                                           | Versioned prompt and tool configuration; audio evaluation pending |
 | Clarification, corrections, out-of-order answers | Prompt accepts multiple fields and spelling; server returns field errors                              | Validation and correction tests                                   |
 | Full confirmation before save                    | Prepare/read-back/confirm sequence; token scoped to call and exact draft                              | Old token, missing consent, corrections and retry tests           |
@@ -25,17 +25,17 @@ Source: all eight pages of the supplied Voice AI Agent Patient Registration Syst
 | Failure feedback                                 | Correlated Vapi errors plus request-failed speech                                                     | Tool failure and database rollback tests; audio pending           |
 | Environment secrets and input sanitization       | Separate bearer credentials, signed cookie, CSRF check, body limits, parameterized SQL, rate limiting | Auth/CSRF/schema tests                                            |
 | Conversation observability                       | Linked transcript/summary, structured stdout; final payload enabled for synthetic demo                | End-of-call test                                                  |
-| Deployment accessible at review                  | Sites Worker and D1; protected patient API on public origin                                           | Live deployment smoke test to be recorded                         |
+| Deployment accessible at review                  | Sites Worker and D1; protected patient API on public origin                                           | Live authenticated API/webhook smoke test passed                  |
 | Documentation                                    | README, architecture, setup, env, trade-offs and limitations                                          | Included                                                          |
 | Returning-caller bonus                           | Phone + birth date lookup, explicit update permission                                                 | Returning-caller tests                                            |
 | Scheduling bonus                                 | Persistent mock availability and unique slot booking                                                  | Booking/idempotency test                                          |
 | Spanish bonus                                    | Multilingual STT/TTS and language-aware prompt                                                        | Configuration present; real Spanish audio pending                 |
 | Transcript bonus                                 | End-of-call webhook linked to patient                                                                 | Integration test and dashboard                                    |
-| Dashboard bonus                                  | Patient table/search/details, call history, transcripts, demo bookings                                | Compiles and serves; no browser interaction QA claimed            |
+| Dashboard bonus                                  | Patient table/search/details, call history, transcripts, demo bookings                                | Production build and live page load verified                      |
 | Tests bonus                                      | Node test runner, real SQLite and production handler                                                  | Automated test suite                                              |
 
 ## Evaluation dimensions
 
-Each core dimension carries 20%. Working phone audio and conversational quality need real calls; passing backend tests is not evidence of those two dimensions. Architecture, validation, state transitions, persistence and errors are verified automatically. The submission must not claim a provisioned number or a successful audio call until those are actually observed.
+Each core dimension carries 20%. The US number and its assistant routing are provisioned. Working phone audio and conversational quality still need a real call; passing backend tests is not evidence of those two dimensions. Architecture, validation, state transitions, persistence and errors are verified automatically. No successful audio call is claimed until one is actually observed.
 
 The PDF's three-hour deadline and preference for a small working system take precedence over speculative additions. No HIPAA compliance, clinical scheduling, or real patient-data suitability is claimed.
