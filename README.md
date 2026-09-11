@@ -180,6 +180,6 @@ docs/                   Requirement traceability and reviewer walkthrough
 
 ## Next steps
 
-Complete provider activation and real English/Spanish phone tests; publish under the intended GitHub account; record the final phone/API/dashboard URLs and reviewer notes. For production: stronger identity and role authorization, retention/redaction, audit history, backups/recovery exercises, provider evaluation datasets, cost/latency alerts and applicable healthcare compliance review.
+Before the interview review, make one real English call and one Spanish call using fictional details to evaluate pronunciation, interruption handling and carrier audio. For a production healthcare rollout, add organization identity and role authorization, formal retention/redaction and audit policies, backup recovery exercises, provider evaluation datasets, cost/latency alerts and the applicable compliance review.
 
 See [requirements coverage](docs/REQUIREMENTS.md) and [reviewer/interview walkthrough](docs/DEMO.md).
