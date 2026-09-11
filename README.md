@@ -8,7 +8,7 @@ An AI Engineer assessment implementation: a phone-based patient registration age
 
 | Deliverable          | Status                                                                                                               |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Repository           | Prepared for publication under `nehaaamir17`                                                                         |
+| Repository           | [github.com/nehaaamir17/carecloud-voice-ai-agent](https://github.com/nehaaamir17/carecloud-voice-ai-agent)           |
 | API base URL         | [carecloud-voice-intake-neha.aamirneha73.chatgpt.site](https://carecloud-voice-intake-neha.aamirneha73.chatgpt.site) |
 | Dashboard            | Same public origin; patient data requires the separately shared reviewer key                                         |
 | US phone number      | **[+1 (772) 256-9450](tel:+17722569450)**                                                                            |
@@ -93,6 +93,16 @@ Hosted runtime values are configured as deployment secrets/environment variables
 6. Make real calls using [the demo script](docs/DEMO.md). Check registration, correction, return call, silence, interruption, hangup, and Spanish. Verify the same patient UUID after an update.
 
 Provisioning records completed IDs in ignored `provisioning.local.json`. An ambiguous create failure is deliberately not retried automatically; inspect Vapi first and record the resource ID before continuing. If a free number cannot be provisioned, document the provider response and use Vapi's assistant test interface while resolving the number. Do not claim a number works until a call succeeds.
+
+### Integration issues resolved
+
+- The initially requested `202` area code was unavailable from the Vapi-managed free-number inventory. The API returned available alternatives, so provisioning was retried with `772` and the selected number was bound to the same assistant. `VAPI_AREA_CODE` keeps this choice configurable.
+- Creating the server bearer credential through the first API payload returned a provider validation error. The credential was created through Vapi's Server Configuration UI, stored only as a provider resource, and referenced by the assistant; neither the credential nor the Vapi private key is committed.
+- The first deployment URL was a pre-publication hostname. After the permanent public hostname was assigned, the assistant server URL and hosted environment were updated together, then verified with the live authenticated webhook smoke test.
+- GitHub CLI was initially authenticated to a different personal account. The repository was created under the required `nehaaamir17` owner, the final commit author was corrected, and temporary collaborator access used during setup was removed.
+- The local Sites archive helper expected Bash/WSL, which was unavailable on this Windows host. The documented portable remote-build path was used instead; the production build, health check, and smoke suite all passed.
+
+These were setup/provider issues rather than application fallbacks. The repository remains runnable locally with SQLite using the instructions above, and the deployed Worker uses D1. A real inbound audio call is still the outstanding manual verification step.
 
 The assistant prompt is in [voice/system-prompt.md](voice/system-prompt.md); its tools and provider configuration are in [voice/assistant.mjs](voice/assistant.mjs). Vapi sends `tool-calls` to `/webhooks/vapi`; each result returns the matching `toolCallId` and a JSON-encoded string. End-of-call reports store the transcript/summary and retain its patient association.
 
