@@ -511,8 +511,19 @@ h1 span {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
   padding: 26px 28px;
+}
+.refresh-status {
+  margin-left: auto;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  white-space: nowrap;
 }
 h2 {
   font-size: 22px;
@@ -1006,6 +1017,12 @@ dd {
   .section-heading,
   .access-panel {
     padding: 20px;
+  }
+  .refresh-status {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    text-align: center;
   }
   .page-footer {
     flex-direction: column;

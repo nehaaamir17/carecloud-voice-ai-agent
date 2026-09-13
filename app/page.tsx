@@ -41,9 +41,10 @@ export default function Home() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [search, setSearch] = useState(""),
-    [selected, setSelected] = useState<Patient | null>(null);
-  async function refresh() {
-    setBusy(true);
+    [selected, setSelected] = useState<Patient | null>(null),
+    [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  async function refresh({ silent = false }: { silent?: boolean } = {}) {
+    if (!silent) setBusy(true);
     setError("");
     try {
       const r = await fetch(
@@ -65,16 +66,24 @@ export default function Home() {
       }
       setPatients(j.data);
       setLocked(false);
+      setLastUpdated(new Date());
       setRevision((v) => v + 1);
     } catch (e) {
       setError((e as Error).message);
     } finally {
-      setBusy(false);
+      if (!silent) setBusy(false);
     }
   }
   useEffect(() => {
     void refresh();
   }, []);
+  useEffect(() => {
+    if (locked) return;
+    const timer = window.setInterval(() => {
+      void refresh({ silent: true });
+    }, 15_000);
+    return () => window.clearInterval(timer);
+  }, [locked, search]);
   async function login(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -196,19 +205,34 @@ export default function Home() {
               <p>Confirmed demographic records in one place.</p>
             </div>
             {!locked && (
-              <button
-                className="logout"
-                onClick={async () => {
-                  await fetch("/api/session", { method: "DELETE" });
-                  setLocked(true);
-                  setPatients([]);
-                  setSelected(null);
-                }}
-              >
-                Lock workspace
-              </button>
+              <>
+                <span className="refresh-status" aria-live="polite">
+                  Live · updates every 15s
+                  {lastUpdated
+                    ? ` · ${lastUpdated.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}`
+                    : ""}
+                </span>
+                <button
+                  className="logout"
+                  onClick={async () => {
+                    await fetch("/api/session", { method: "DELETE" });
+                    setLocked(true);
+                    setPatients([]);
+                    setSelected(null);
+                  }}
+                >
+                  Lock workspace
+                </button>
+              </>
             )}
-            <button className="secondary" onClick={refresh} disabled={busy}>
+            <button
+              className="secondary"
+              onClick={() => void refresh()}
+              disabled={busy}
+            >
               <RefreshCw size={16} />
               Refresh
             </button>
