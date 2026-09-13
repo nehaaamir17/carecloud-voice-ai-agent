@@ -1,7 +1,7 @@
 # Reviewer walkthrough (use fictional details)
 
 1. Open the dashboard. Unlock with the reviewer key supplied privately.
-2. Call the configured US number. Say: “My name is Jane Doe. I was born March 15, 1990, and my phone number is 202-555-0142.”
+2. Call the configured US number, or select **Call free in browser** on the dashboard and allow microphone access. Say: “My name is Jane Doe. I was born March 15, 1990, and my phone number is 202-555-0142.”
 3. Provide sex Female and address “123 Example Street, Boston, Massachusetts, 02108.” Decline optional information if desired.
 4. During read-back say: “Actually, my last name is Davis, spelled D-A-V-I-S.” The agent should issue a new full read-back and wait.
 5. Confirm. The agent must announce success only after persistence returns. Decline a demo appointment to end the call.
