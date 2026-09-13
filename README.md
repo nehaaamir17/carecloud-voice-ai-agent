@@ -12,6 +12,7 @@ An AI Engineer assessment implementation: a phone-based patient registration age
 | API base URL         | [carecloud-voice-intake-neha.aamirneha73.chatgpt.site](https://carecloud-voice-intake-neha.aamirneha73.chatgpt.site) |
 | Dashboard            | Same public origin; patient data requires the separately shared reviewer key                                         |
 | US phone number      | **[+1 (772) 256-9450](tel:+17722569450)**                                                                            |
+| Browser voice call   | Open the dashboard and select **Call free in browser**; no international phone balance required                      |
 | Reviewer credentials | Shared separately; never committed                                                                                   |
 
 The backend is integration-tested and the Vapi assistant is attached to the listed US number. Real phone audio, pronunciation, interruption handling and Spanish voice quality should still be checked with the [demo script](docs/DEMO.md); a webhook test alone is not a real phone-call test.
@@ -79,6 +80,7 @@ On PowerShell, use `Copy-Item .env.example .env` and `Copy-Item .env .dev.vars` 
 | `PUBLIC_BASE_URL`     | Public HTTPS origin for provider webhook and smoke tests                 |
 | `VAPI_ASSISTANT_ID`   | Provisioned assistant ID; enables deployment readiness display           |
 | `VAPI_PHONE_NUMBER`   | Actual provisioned US number in E.164 format                             |
+| `VAPI_PUBLIC_KEY`     | Browser-safe Vapi key restricted to the production origin and assistant  |
 | `LOG_DEMOGRAPHICS`    | `true` logs final synthetic patient payloads to stdout                   |
 | `VAPI_MODEL`          | Optional provisioning-only model override; defaults to `gpt-4.1`         |
 
@@ -91,13 +93,15 @@ Hosted runtime values are configured as deployment secrets/environment variables
 3. Put the Vapi **private** key, public base URL and webhook secret in `.env`.
 4. Run `npm run vapi:provision`. The script creates a reusable bearer credential, creates/updates the assistant, requests a Vapi-managed US inbound number, and binds it to the assistant. It does not purchase a paid number or place outbound calls.
 5. Copy the returned assistant ID and phone number into the backend environment and redeploy that environment revision. These values are public identifiers, not private keys.
-6. Make real calls using [the demo script](docs/DEMO.md). Check registration, correction, return call, silence, interruption, hangup, and Spanish. Verify the same patient UUID after an update.
+6. In Vapi **API Keys**, create a public key limited to the deployed site origin and this assistant. Store it as `VAPI_PUBLIC_KEY` to enable the dashboard's browser voice call.
+7. Make real calls using [the demo script](docs/DEMO.md). Check registration, correction, return call, silence, interruption, hangup, and Spanish. Verify the same patient UUID after an update.
 
 Provisioning records completed IDs in ignored `provisioning.local.json`. An ambiguous create failure is deliberately not retried automatically; inspect Vapi first and record the resource ID before continuing. If a free number cannot be provisioned, document the provider response and use Vapi's assistant test interface while resolving the number. Do not claim a number works until a call succeeds.
 
 ### Integration issues resolved
 
 - The initially requested `202` area code was unavailable from the Vapi-managed free-number inventory. The API returned available alternatives, so provisioning was retried with `772` and the selected number was bound to the same assistant. `VAPI_AREA_CODE` keeps this choice configurable.
+- WhatsApp calls are a separate WhatsApp Business Platform Calling API integration and cannot be routed to the Vapi-managed PSTN number by configuration alone. The browser call is the assessment-safe international fallback: it uses the same Vapi assistant and backend while removing carrier charges for the reviewer.
 - Creating the server bearer credential through the first API payload returned a provider validation error. The credential was created through Vapi's Server Configuration UI, stored only as a provider resource, and referenced by the assistant; neither the credential nor the Vapi private key is committed.
 - The first deployment URL was a pre-publication hostname. After the permanent public hostname was assigned, the assistant server URL and hosted environment were updated together, then verified with the live authenticated webhook smoke test.
 - GitHub CLI was initially authenticated to a different personal account. The repository was created under the required `nehaaamir17` owner, the final commit author was corrected, and temporary collaborator access used during setup was removed.

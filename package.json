@@ -18,12 +18,13 @@
     "db:migrate:local": "node scripts/migrate-local.mjs",
     "smoke": "node --env-file=.env scripts/smoke.mjs",
     "docs:generate": "node scripts/generate-api-docs.mjs",
-    "format:check": "prettier --check app components/agent-card.tsx components/call-history.tsx components/operations-insights.tsx components/theme-picker.tsx components/webmcp.tsx lib db/schema.ts voice scripts/test.mjs scripts/smoke.mjs scripts/provision-vapi.mjs tests docs README.md"
+    "format:check": "prettier --check app components/agent-card.tsx components/browser-call.tsx components/call-history.tsx components/operations-insights.tsx components/theme-picker.tsx components/webmcp.tsx lib db/schema.ts voice scripts/test.mjs scripts/smoke.mjs scripts/provision-vapi.mjs tests docs README.md"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@hookform/resolvers": "^5.7.1",
     "@shadcn/react": "^0.3.0",
+    "@vapi-ai/web": "2.7.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "^1.1.1",
