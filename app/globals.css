@@ -388,13 +388,71 @@ h1 span {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  min-height: 145px;
+  min-height: 178px;
 }
 .voice-card p {
   color: var(--hero-muted);
   font-size: 13px;
   margin-top: 6px;
   max-width: 190px;
+}
+.browser-call {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+.browser-call-button {
+  width: max-content;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--primary) 65%, white);
+  border-radius: 999px;
+  padding: 8px 13px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--primary) 30%, transparent);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+.browser-call-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--primary) 42%, transparent);
+}
+.browser-call-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, white 65%, transparent);
+  outline-offset: 2px;
+}
+.browser-call-button.live {
+  background: #dc3545;
+  border-color: #ff909a;
+}
+.browser-call-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+.browser-call-status {
+  color: var(--hero-muted);
+  font-size: 11px;
+  line-height: 1.35;
+  max-width: 220px;
+}
+.spin {
+  animation: spin 850ms linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 .wave {
   display: flex;
@@ -851,7 +909,7 @@ dd {
   }
   .voice-card {
     width: 100%;
-    min-height: 110px;
+    min-height: 155px;
   }
   .metrics {
     gap: 10px;
@@ -954,6 +1012,9 @@ dd {
   }
   .voice-card strong {
     font-size: 15px;
+  }
+  .browser-call-status {
+    max-width: 190px;
   }
   h1 {
     font-size: 34px;
