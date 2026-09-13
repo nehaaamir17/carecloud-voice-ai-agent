@@ -17,9 +17,20 @@ const example = JSON.stringify(
 export default function Docs() {
   return (
     <main className="docs content">
-      <Link className="text-link" href="/">
-        ← Back to dashboard
-      </Link>
+      <div className="docs-topline">
+        <div className="docs-brand">
+          <img
+            src="/carecloud-logo.png"
+            alt="CareCloud"
+            width="38"
+            height="38"
+          />
+          <span>CareCloud Developer Platform</span>
+        </div>
+        <Link className="text-link" href="/">
+          ← Back to dashboard
+        </Link>
+      </div>
       <div className="eyebrow">DEVELOPER REFERENCE</div>
       <h1>Patient registration API</h1>
       <p>
