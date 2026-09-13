@@ -107,7 +107,7 @@ export default function Home() {
       <header className="topbar">
         <a className="brand" href="/">
           <span className="brand-mark">
-            <AudioLines />
+            <img src="/carecloud-logo.png" alt="" width="40" height="40" />
           </span>
           CareCloud <span>Intake</span>
         </a>

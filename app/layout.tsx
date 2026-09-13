@@ -6,8 +6,9 @@ export const metadata: Metadata = {
   description:
     "Patient registration through natural conversation, with confirmed records and a persistent REST API.",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/carecloud-logo.png",
+    shortcut: "/carecloud-logo.png",
+    apple: "/carecloud-logo.png",
   },
 };
 
