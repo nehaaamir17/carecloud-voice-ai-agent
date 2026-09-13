@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Phone } from "lucide-react";
+import { BrowserCall } from "@/components/browser-call";
 export function AgentCard() {
   const [state, setState] = useState<{
       voice_configured: boolean;
@@ -32,6 +33,7 @@ export function AgentCard() {
               {state.phone_number}
             </a>
             <p>English & Spanish · Fictional details only</p>
+            <BrowserCall />
           </>
         ) : (
           <p>
