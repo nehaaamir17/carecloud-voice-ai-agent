@@ -7,6 +7,7 @@ import { database, reopen } from "./database";
 import { handleRequest } from "../lib/http";
 import { patientSchema } from "../lib/validation";
 import { VoiceService } from "../lib/voice";
+import type { AppEnv } from "../lib/auth";
 const key = "test-access-key-32-characters-long-123456",
   secret = "test-webhook-secret-32-characters-123456";
 export const jane = {
@@ -21,7 +22,11 @@ export const jane = {
   zip_code: "02108",
 };
 function harness(db = database()) {
-  const env = { DB: db, ADMIN_API_KEY: key, VAPI_WEBHOOK_SECRET: secret };
+  const env: AppEnv = {
+    DB: db,
+    ADMIN_API_KEY: key,
+    VAPI_WEBHOOK_SECRET: secret,
+  };
   return {
     db,
     env,
@@ -206,6 +211,27 @@ test("API auth, webhook separation, signed session and CSRF", async () => {
       ).status,
       401,
     );
+  } finally {
+    h.db.close();
+  }
+});
+test("browser voice config exposes only the origin-restricted public key", async () => {
+  const h = harness();
+  try {
+    h.env.VAPI_ASSISTANT_ID = "assistant-test";
+    h.env.VAPI_PUBLIC_KEY = "public-test-key";
+    const response = await h.request("/api/voice-config", "GET", undefined, {
+      authorization: "",
+    });
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as any;
+    assert.deepEqual(body.data, {
+      enabled: true,
+      assistant_id: "assistant-test",
+      public_key: "public-test-key",
+    });
+    assert.equal(JSON.stringify(body).includes(key), false);
+    assert.equal(JSON.stringify(body).includes(secret), false);
   } finally {
     h.db.close();
   }
