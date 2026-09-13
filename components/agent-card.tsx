@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Phone } from "lucide-react";
 import { BrowserCall } from "@/components/browser-call";
 export function AgentCard() {
   const [state, setState] = useState<{
@@ -24,7 +23,9 @@ export function AgentCard() {
   }, []);
   return (
     <div className="voice-card">
-      <Phone size={23} />
+      <span className="voice-card-logo">
+        <img src="/carecloud-logo.png" alt="CareCloud" width="34" height="34" />
+      </span>
       <div>
         <strong>Patient registration agent</strong>
         {state?.voice_configured ? (
