@@ -33,10 +33,25 @@ export async function handleRequest(request: Request, env: AppEnv) {
             env.VAPI_PHONE_NUMBER &&
             env.VAPI_WEBHOOK_SECRET
           ),
+          web_call_configured: !!(env.VAPI_ASSISTANT_ID && env.VAPI_PUBLIC_KEY),
           phone_number: env.VAPI_PHONE_NUMBER || null,
         },
         200,
         { "X-Request-ID": requestId },
+      );
+    }
+    if (path === "/api/voice-config" && request.method === "GET") {
+      return json(
+        {
+          enabled: !!(env.VAPI_ASSISTANT_ID && env.VAPI_PUBLIC_KEY),
+          assistant_id: env.VAPI_ASSISTANT_ID || null,
+          public_key: env.VAPI_PUBLIC_KEY || null,
+        },
+        200,
+        {
+          "Cache-Control": "public, max-age=300",
+          "X-Request-ID": requestId,
+        },
       );
     }
     if (path === "/api/session") {
