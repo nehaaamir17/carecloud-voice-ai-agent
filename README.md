@@ -15,7 +15,7 @@ An AI Engineer assessment implementation: a phone-based patient registration age
 | Browser voice call   | Open the dashboard and select **Call free in browser**; no international phone balance required                      |
 | Reviewer credentials | Shared separately; never committed                                                                                   |
 
-The backend is integration-tested and the Vapi assistant is attached to the listed US number. Real phone audio, pronunciation, interruption handling and Spanish voice quality should still be checked with the [demo script](docs/DEMO.md); a webhook test alone is not a real phone-call test.
+The backend is integration-tested and the Vapi assistant is attached to the listed US number. A live Vapi audio conversation completed registration, produced a linked transcript, and persisted a demo appointment. See the anonymized [live test evidence](docs/LIVE_TEST.md). Correction, restart, returning-caller and Spanish scenarios remain useful reviewer demonstrations with the [demo script](docs/DEMO.md).
 
 ## What it does
 
@@ -107,7 +107,7 @@ Provisioning records completed IDs in ignored `provisioning.local.json`. An ambi
 - GitHub CLI was initially authenticated to a different personal account. The repository was created under the required `nehaaamir17` owner, the final commit author was corrected, and temporary collaborator access used during setup was removed.
 - The local Sites archive helper expected Bash/WSL, which was unavailable on this Windows host. The documented portable remote-build path was used instead; the production build, health check, and smoke suite all passed.
 
-These were setup/provider issues rather than application fallbacks. The repository remains runnable locally with SQLite using the instructions above, and the deployed Worker uses D1. A real inbound audio call is still the outstanding manual verification step.
+These were setup/provider issues rather than application fallbacks. The repository remains runnable locally with SQLite using the instructions above, and the deployed Worker uses D1. A live Vapi audio registration has now verified the conversational tool path through database persistence and mock scheduling.
 
 The assistant prompt is in [voice/system-prompt.md](voice/system-prompt.md); its tools and provider configuration are in [voice/assistant.mjs](voice/assistant.mjs). Vapi sends `tool-calls` to `/webhooks/vapi`; each result returns the matching `toolCallId` and a JSON-encoded string. End-of-call reports store the transcript/summary and retain its patient association.
 
@@ -195,6 +195,6 @@ docs/                   Requirement traceability and reviewer walkthrough
 
 ## Next steps
 
-Before the interview review, make one real English call and one Spanish call using fictional details to evaluate pronunciation, interruption handling and carrier audio. For a production healthcare rollout, add organization identity and role authorization, formal retention/redaction and audit policies, backup recovery exercises, provider evaluation datasets, cost/latency alerts and the applicable compliance review.
+Before the interview review, use the completed English call as the primary proof, then make one returning-caller update and one short Spanish call with fictional details if Vapi credit allows. These two calls demonstrate the remaining live evaluation scenarios without changing the architecture. For a production healthcare rollout, add organization identity and role authorization, formal retention/redaction and audit policies, backup recovery exercises, provider evaluation datasets, cost/latency alerts and the applicable compliance review.
 
-See [requirements coverage](docs/REQUIREMENTS.md) and [reviewer/interview walkthrough](docs/DEMO.md).
+See [requirements coverage](docs/REQUIREMENTS.md), [live test evidence](docs/LIVE_TEST.md), and the [reviewer/interview walkthrough](docs/DEMO.md).
