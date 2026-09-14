@@ -6,14 +6,14 @@ An AI Engineer assessment implementation: a phone-based patient registration age
 
 ## Submission status
 
-| Deliverable          | Status                                                                                                               |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Repository           | [github.com/nehaaamir17/carecloud-voice-ai-agent](https://github.com/nehaaamir17/carecloud-voice-ai-agent)           |
-| API base URL         | [carecloud-voice-intake-neha.aamirneha73.chatgpt.site](https://carecloud-voice-intake-neha.aamirneha73.chatgpt.site) |
-| Dashboard            | Same public origin; patient data requires the separately shared reviewer key                                         |
-| US phone number      | **[+1 (772) 256-9450](tel:+17722569450)**                                                                            |
-| Browser voice call   | Open the dashboard and select **Call free in browser**; no international phone balance required                      |
-| Reviewer credentials | Shared separately; never committed                                                                                   |
+| Deliverable          | Status                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Repository           | [github.com/nehaaamir17/carecloud-voice-ai-agent](https://github.com/nehaaamir17/carecloud-voice-ai-agent)       |
+| API base URL         | [carecloud-voice-ai-agent-production.up.railway.app](https://carecloud-voice-ai-agent-production.up.railway.app) |
+| Dashboard            | Same Railway origin; patient data requires the separately shared reviewer key                                    |
+| US phone number      | **[+1 (772) 256-9450](tel:+17722569450)**                                                                        |
+| Browser voice call   | Open the dashboard and select **Call free in browser**; no international phone balance required                  |
+| Reviewer credentials | Shared separately; never committed                                                                               |
 
 The backend is integration-tested and the Vapi assistant is attached to the listed US number. A live Vapi audio conversation completed registration, produced a linked transcript, and persisted a demo appointment. See the anonymized [live test evidence](docs/LIVE_TEST.md). Correction, restart, returning-caller and Spanish scenarios remain useful reviewer demonstrations with the [demo script](docs/DEMO.md).
 
@@ -35,9 +35,12 @@ flowchart LR
   Caller[US phone caller] <--> Vapi[Vapi: telephony + Deepgram STT + voice TTS]
   Vapi <--> LLM[GPT-4.1 + versioned intake prompt]
   Vapi -->|Authenticated tool webhook| Voice[Voice service: draft and confirmation]
+  Reviewer[Reviewer] --> Railway[Railway public gateway]
+  Railway --> Dashboard[React dashboard]
+  Railway --> API[REST API]
   Voice --> Patient[Shared patient service + Zod validation]
-  API[REST API] --> Patient
-  Dashboard[React dashboard] --> API
+  API --> Patient
+  Dashboard --> API
   Patient --> DB[(Cloudflare D1 / SQLite)]
   Voice --> DB
   Vapi -->|End-of-call transcript| DB
@@ -45,7 +48,7 @@ flowchart LR
 
 The last arrow is implemented through the authenticated webhook and voice service, not direct provider database access.
 
-**Stack:** TypeScript, React 19, Vinext/Cloudflare Workers, Zod, Drizzle-generated SQLite migrations, Cloudflare D1, Vapi, Deepgram Nova 3, Vapi multilingual voice, GPT-4.1.
+**Stack:** TypeScript, React 19, Vinext/Cloudflare Workers, Railway, Zod, Drizzle-generated SQLite migrations, Cloudflare D1, Vapi, Deepgram Nova 3, Vapi multilingual voice, GPT-4.1.
 
 Vapi avoids rebuilding streaming telephony, STT/TTS and turn-taking during a short assessment. D1 offers durable SQL without a separate database account or connection pool. Raw prepared statements keep queries explicit; Drizzle owns schema/migration generation. The voice and REST paths share business logic rather than duplicating validation.
 
@@ -83,8 +86,11 @@ On PowerShell, use `Copy-Item .env.example .env` and `Copy-Item .env .dev.vars` 
 | `VAPI_PUBLIC_KEY`     | Browser-safe Vapi key restricted to the production origin and assistant  |
 | `LOG_DEMOGRAPHICS`    | `true` logs final synthetic patient payloads to stdout                   |
 | `VAPI_MODEL`          | Optional provisioning-only model override; defaults to `gpt-4.1`         |
+| `UPSTREAM_ORIGIN`     | Railway gateway target; the deployed Worker HTTPS origin                 |
 
 Hosted runtime values are configured as deployment secrets/environment variables, never placed in `.openai/hosting.json`. `DB` is the logical D1 binding. `.env`, `.dev.vars`, provisioning checkpoints, reviewer credentials and local database files are ignored by Git.
+
+The reviewer-facing Railway service runs `npm run start:railway`, listens on Railway's `PORT`, and health-checks `/health`. It forwards dashboard and API traffic to the deployed Worker/D1 runtime while preserving request methods, signed session cookies, security headers, and same-origin write protection. This keeps the verified database and live call history intact behind a provider-neutral public URL.
 
 ## Activate the phone agent
 
@@ -103,7 +109,7 @@ Provisioning records completed IDs in ignored `provisioning.local.json`. An ambi
 - The initially requested `202` area code was unavailable from the Vapi-managed free-number inventory. The API returned available alternatives, so provisioning was retried with `772` and the selected number was bound to the same assistant. `VAPI_AREA_CODE` keeps this choice configurable.
 - WhatsApp calls are a separate WhatsApp Business Platform Calling API integration and cannot be routed to the Vapi-managed PSTN number by configuration alone. The browser call is the assessment-safe international fallback: it uses the same Vapi assistant and backend while removing carrier charges for the reviewer.
 - Creating the server bearer credential through the first API payload returned a provider validation error. The credential was created through Vapi's Server Configuration UI, stored only as a provider resource, and referenced by the assistant; neither the credential nor the Vapi private key is committed.
-- The first deployment URL was a pre-publication hostname. After the permanent public hostname was assigned, the assistant server URL and hosted environment were updated together, then verified with the live authenticated webhook smoke test.
+- The first backend URL was a pre-publication hostname. After the permanent backend hostname was assigned, the assistant server URL and hosted environment were updated together, then verified with the live authenticated webhook smoke test. A Railway gateway now provides the reviewer-facing dashboard and API URL without migrating or splitting the verified D1 data.
 - GitHub CLI was initially authenticated to a different personal account. The repository was created under the required `nehaaamir17` owner, the final commit author was corrected, and temporary collaborator access used during setup was removed.
 - The local Sites archive helper expected Bash/WSL, which was unavailable on this Windows host. The documented portable remote-build path was used instead; the production build, health check, and smoke suite all passed.
 
@@ -189,6 +195,7 @@ db/schema.ts            Relational schema and constraints
 drizzle/                Generated immutable migrations
 voice/                  Versioned system prompt and assistant/tool configuration
 scripts/                Provisioning, migration, documentation and smoke helpers
+scripts/railway-proxy.mjs  Railway dashboard/API gateway with origin and cookie forwarding
 tests/                  Real-SQLite integration tests
 docs/                   Requirement traceability and reviewer walkthrough
 ```
